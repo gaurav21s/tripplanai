@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelPlan AI - Your Smart Travel Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #008cff;
+            --secondary: #ff9800;
+            --dark-blue: #0b3d91;
+            --light-blue: #e6f7ff;
+            --grey: #f2f2f2;
+            --dark-grey: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #0077cc, #00a1ff);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        /* Header Styles */
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links a i {
+            margin-right: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        /* User dropdown */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .user-dropdown-btn {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        
+        .user-dropdown-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-dropdown-btn i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-dropdown-content a {
+            color: var(--dark-grey) !important;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin: 0 !important;
+            transition: all 0.2s;
+        }
+        
+        .user-dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-dropdown-content a:hover {
+            background-color: var(--light-blue);
+            color: var(--dark-blue) !important;
+            transform: none;
+        }
+        
+        .user-dropdown-content .dropdown-divider {
+            border-top: 1px solid #eee;
+            margin: 5px 0;
+        }
+
+        .user-dropdown:hover .user-dropdown-content {
+            display: block;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                              url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(249, 249, 249, 1), rgba(249, 249, 249, 0));
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Planning Form */
+        .planning-form {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+            border-top: 5px solid var(--primary);
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark-blue);
+            font-size: 28px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .form-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark-grey);
+            font-size: 15px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #fafafa;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.1);
+            background-color: white;
+        }
+        
+        select.form-control {
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 40px;
+        }
+        
+        /* Interest selection - Improved */
+        .interest-container {
+            margin-top: 10px;
+        }
+        
+        .interest-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--dark-grey);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .selected-count {
+            font-size: 13px;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        
+        .interest-chip {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 44px;
+        }
+        
+        .interest-chip input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .interest-chip label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f5f5f5;
+            border: 2px solid #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #555;
+            height: 100%;
+            margin: 0;
+            gap: 8px;
+        }
+        
+        .interest-chip label i {
+            font-size: 16px;
+        }
+        
+        .interest-chip input:checked + label {
+            background-color: var(--light-blue);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .interest-chip:hover label {
+            background-color: #eaeaea;
+            transform: translateY(-2px);
+        }
+        
+        .interest-chip input:checked + label:hover {
+            background-color: #d0e8ff;
+        }
+        
+        .welcome-message {
+            background-color: var(--light-blue);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: var(--dark-blue);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .welcome-message i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .welcome-text h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .welcome-text p {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .api-key-section {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 18px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            animation: fadeInUp 0.5s ease 0.2s both;
+        }
+        
+        .api-key-title {
+            display: flex;
+            align-items: center;
+            color: #ff6f00;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .api-key-title i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .api-key-section p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            width: 220px;
+            margin: 35px auto 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 140, 255, 0.3);
+        }
+        
+        .btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 140, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: linear-gradient(135deg, #aaa, #ccc);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Error messages */
+        .error-message {
+            color: #e53935;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.active {
+            display: block;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        
+        /* Results Section */
+        #results {
+            margin-top: 60px;
+            margin-bottom: 60px;
+            display: none;
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .loader-content {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .loader i {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .loader p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .loader small {
+            color: #888;
+            max-width: 300px;
+            text-align: center;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .card-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 22px 25px;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            margin-right: 10px;
+            font-size: 22px;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .destination-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .destination-header i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-right: 20px;
+        }
+        
+        .destination-name {
+            font-size: 32px;
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin: 30px 0 20px;
+            color: var(--dark-blue);
+            padding-bottom: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+        
+        .info-list {
+            list-style: none;
+            margin-left: 10px;
+        }
+        
+        .info-list li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .info-list li:before {
+            content: "•";
+            color: var(--primary);
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+        
+        .itinerary-day {
+            background-color: var(--light-blue);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .day-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+        }
+        
+        .day-title i {
+            margin-right: 10px;
+        }
+        
+        .activity {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .activity:last-child {
+            margin-bottom: 0;
+        }
+        
+        .activity-time {
+            width: 80px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 15px;
+            padding-right: 15px;
+            border-right: 2px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-details {
+            flex: 1;
+            padding-left: 15px;
+        }
+        
+        .activity-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-blue);
+            font-size: 16px;
+        }
+        
+        .activity-location {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-location i, .activity-transport i {
+            margin-right: 5px;
+            color: #888;
+            font-size: 12px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .activity-transport {
+            font-size: 14px;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+        
+        .budget-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .budget-item {
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .budget-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .budget-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+        }
+        
+        .budget-title i {
+            margin-right: 8px;
+        }
+        
+        .budget-value {
+            font-size: 28px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .budget-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-grey);
+            color: white;
+            padding: 50px 0 30px;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .footer-logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        .footer-content p {
+            margin-bottom: 15px;
+            color: #ccc;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .social-links {
+            margin-top: 25px;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 22px;
+            transition: all 0.3s;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .flash-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            animation: fadeInUp 0.5s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .flash-message i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .flash-message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+        
+        .flash-message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 36px;
+            }
+            
+            .hero-content p {
+                font-size: 16px;
+            }
+            
+            .planning-form {
+                margin-top: -50px;
+                padding: 25px;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .interest-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                padding: 0 15px;
+            }
+            
+            .budget-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <i class="fas fa-plane-departure"></i>
+                <span>TravelPlan AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Home</a>
+                <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+                <div class="user-dropdown">
+                    <button class="user-dropdown-btn">
+                        <i class="fas fa-user-circle"></i> 
+                        {{ session.get('user', {}).get('full_name', 'User') }}
+                    </button>
+                    <div class="user-dropdown-content">
+                        <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Perfect Journey</h1>
+            <p>Let our AI travel assistant create a personalized travel plan just for you. Simply share your preferences, and we'll handle the rest!</p>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="planning-form">
+            <h2 class="form-title">Plan Your Dream Trip</h2>
+            
+            <div class="welcome-message">
+                <i class="fas fa-user-check"></i>
+                <div class="welcome-text">
+                    <h3>Welcome back, {{ session.get('user', {}).get('full_name', 'Traveler') }}!</h3>
+                    <p>Ready to plan your next adventure? Fill in your preferences below.</p>
+                </div>
+            </div>
+            
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-message {% if category == 'error' %}error{% else %}success{% endif %}">
+                                <i class="{% if category == 'error' %}fas fa-exclamation-circle{% else %}fas fa-check-circle{% endif %}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            <div class="api-key-section">
+                <div class="api-key-title">
+                    <i class="fas fa-key"></i> Required: OpenAI API Key
+                </div>
+                <p>To generate your personalized travel plan, please enter your OpenAI API key. Your key is used only for this request and is not stored.</p>
+                <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
+                    <input type="password" id="apiKey" class="form-control" placeholder="sk-..." required>
+                </div>
+            </div>
+            
+            <form id="tripForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="travelType">Travel Type</label>
+                        <select id="travelType" class="form-control" required>
+                            <option value="">Select Travel Type</option>
+                            <option value="Leisure">Leisure</option>
+                            <option value="Business">Business</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Cultural">Cultural</option>
+                        </select>
+                        <div class="error-message" id="travelTypeError">Please select a travel type</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="season">Season</label>
+                        <select id="season" class="form-control" required>
+                            <option value="">Select Season</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Winter">Winter</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Fall">Fall</option>
+                        </select>
+                        <div class="error-message" id="seasonError">Please select a season</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Trip Duration (days)</label>
+                        <input type="number" id="duration" class="form-control" min="1" max="30" value="7" required>
+                        <div class="error-message" id="durationError">Please enter a valid duration (1-30 days)</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="interest-container">
+                            <div class="interest-title">
+                                Interests (select multiple)
+                                <span class="selected-count" id="interestCount">0 selected</span>
+                            </div>
+                            <div class="interest-grid">
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-history" name="interests" value="History">
+                                    <label for="interest-history"><i class="fas fa-landmark"></i> History</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-food" name="interests" value="Food">
+                                    <label for="interest-food"><i class="fas fa-utensils"></i> Food</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-nature" name="interests" value="Nature">
+                                    <label for="interest-nature"><i class="fas fa-tree"></i> Nature</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-art" name="interests" value="Art">
+                                    <label for="interest-art"><i class="fas fa-palette"></i> Art</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-shopping" name="interests" value="Shopping">
+                                    <label for="interest-shopping"><i class="fas fa-shopping-bag"></i> Shopping</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-nightlife" name="interests" value="Nightlife">
+                                    <label for="interest-nightlife"><i class="fas fa-moon"></i> Nightlife</label>
+                                </div>
+                            </div>
+                            <div class="error-message" id="interestError">Please select at least one interest</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startCity">Your Current City</label>
+                        <input type="text" id="startCity" class="form-control" placeholder="E.g., Mumbai" required>
+                        <div class="error-message" id="startCityError">Please enter your current city</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="budgetCurrency">Budget Currency</label>
+                        <select id="budgetCurrency" class="form-control" required>
+                            <option value="INR">INR (₹)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
+                        <div class="error-message" id="budgetCurrencyError">Please select a currency</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget Amount</label>
+                        <input type="number" id="budget" class="form-control" min="100" max="100000" value="5000" required>
+                        <div class="error-message" id="budgetError">Please enter a valid budget (100-100,000)</div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="generateButton"><i class="fas fa-magic"></i> Generate Plan</button>
+            </form>
+        </div>
+        
+        <div class="loader" id="loader">
+            <div class="loader-content">
+                <i class="fas fa-spinner"></i>
+                <p>Creating your perfect trip plan...</p>
+                <small>Our AI agents are analyzing destinations, activities, and accommodations based on your preferences.</small>
+            </div>
+        </div>
+        
+        <div id="results">
+            <!-- Results will be inserted here by JavaScript -->
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-plane-departure"></i>
+                <span>TravelPlan AI</span>
+            </div>
+            <p>Your AI-powered travel companion that creates personalized travel itineraries based on your preferences, budget, and interests.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 TravelPlan AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tripForm = document.getElementById('tripForm');
+            const loader = document.getElementById('loader');
+            const results = document.getElementById('results');
+            const apiKeyInput = document.getElementById('apiKey');
+            const generateButton = document.getElementById('generateButton');
+            const interestCount = document.getElementById('interestCount');
+            const interestCheckboxes = document.querySelectorAll('input[name="interests"]');
+            
+            // Update interest count when checkboxes change
+            function updateInterestCount() {
+                const count = document.querySelectorAll('input[name="interests"]:checked').length;
+                interestCount.textContent = `${count} selected`;
+            }
+            
+            // Add event listeners to all interest checkboxes
+            interestCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateInterestCount);
+            });
+            
+            // Enable the generate button when API key is entered
+            apiKeyInput.addEventListener('input', function() {
+                generateButton.disabled = this.value.trim() === '';
+            });
+            
+            // Initialize the button state
+            generateButton.disabled = apiKeyInput.value.trim() === '';
+            
+            // Helper function to show validation errors
+            function showError(elementId, show) {
+                const errorElement = document.getElementById(elementId);
+                if (show) {
+                    errorElement.classList.add('active');
+                } else {
+                    errorElement.classList.remove('active');
+                }
+            }
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                
+                // Check travel type
+                const travelType = document.getElementById('travelType').value;
+                if (!travelType) {
+                    showError('travelTypeError', true);
+                    isValid = false;
+                } else {
+                    showError('travelTypeError', false);
+                }
+                
+                // Check season
+                const season = document.getElementById('season').value;
+                if (!season) {
+                    showError('seasonError', true);
+                    isValid = false;
+                } else {
+                    showError('seasonError', false);
+                }
+                
+                // Check duration
+                const duration = parseInt(document.getElementById('duration').value);
+                if (isNaN(duration) || duration < 1 || duration > 30) {
+                    showError('durationError', true);
+                    isValid = false;
+                } else {
+                    showError('durationError', false);
+                }
+                
+                // Check interests
+                const selectedInterests = document.querySelectorAll('input[name="interests"]:checked');
+                if (selectedInterests.length === 0) {
+                    showError('interestError', true);
+                    isValid = false;
+                } else {
+                    showError('interestError', false);
+                }
+                
+                // Check start city
+                const startCity = document.getElementById('startCity').value.trim();
+                if (!startCity) {
+                    showError('startCityError', true);
+                    isValid = false;
+                } else {
+                    showError('startCityError', false);
+                }
+                
+                // Check budget currency
+                const budgetCurrency = document.getElementById('budgetCurrency').value;
+                if (!budgetCurrency) {
+                    showError('budgetCurrencyError', true);
+                    isValid = false;
+                } else {
+                    showError('budgetCurrencyError', false);
+                }
+                
+                // Check budget
+                const budget = parseInt(document.getElementById('budget').value);
+                if (isNaN(budget) || budget < 100 || budget > 100000) {
+                    showError('budgetError', true);
+                    isValid = false;
+                } else {
+                    showError('budgetError', false);
+                }
+                
+                // Check API key
+                const apiKey = apiKeyInput.value.trim();
+                if (!apiKey) {
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            tripForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // Get all the values from the form
+                const travelType = document.getElementById('travelType').value;
+                const season = document.getElementById('season').value;
+                const duration = parseInt(document.getElementById('duration').value);
+                const apiKey = apiKeyInput.value.trim();
+                
+                // Get selected interests
+                const selectedInterests = [];
+                document.querySelectorAll('input[name="interests"]:checked').forEach(checkbox => {
+                    selectedInterests.push(checkbox.value);
+                });
+                
+                const startCity = document.getElementById('startCity').value.trim();
+                const budgetCurrency = document.getElementById('budgetCurrency').value;
+                const budget = parseInt(document.getElementById('budget').value);
+                
+                // Show the loader
+                loader.style.display = 'block';
+                results.style.display = 'none';
+                
+                // Prepare the data to send
+                const tripData = {
+                    OPENAI_API_KEY: apiKey,
+                    travel_type: travelType,
+                    interests: selectedInterests,
+                    season: season,
+                    duration: duration,
+                    budget_currency: budgetCurrency,
+                    budget: budget,
+                    start_city: startCity
+                };
+                
+                // Scroll to loader
+                loader.scrollIntoView({ behavior: 'smooth' });
+                
+                // Make the API call
+                fetch('/generate_plan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(tripData),
+                    credentials: 'same-origin'  // Include credentials
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide loader
+                    loader.style.display = 'none';
+                    
+                    if (data.success) {
+                        displayResults(data.plan);
+                        results.style.display = 'block';
+                        // Smooth scroll to results
+                        results.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch((error) => {
+                    loader.style.display = 'none';
+                    alert('Error: ' + error.message);
+                });
+            });
+            
+            function displayResults(plan) {
+                let resultsHTML = '';
+                
+                // Destination Section
+                resultsHTML += `
+                <div class="result-card">
+                    <div class="card-header">
+                        <i class="fas fa-map-marker-alt"></i> Destination Overview
+                    </div>
+                    <div class="card-body">
+                        <div class="destination-header">
+                            <i class="fas fa-city"></i>
+                            <h2 class="destination-name">${plan.city_selection?.selected_city || 'Your Destination'}</h2>
+                        </div>
+                `;
+                
+                // City Research Section
+                if (plan.city_research) {
+                    const research = plan.city_research;
+                    
+                    // Attractions
+                    if (research.attractions && research.attractions.length > 0) {
+                        resultsHTML += `
+                            <h3 class="section-title"><i class="fas fa-landmark"></i> Must-See Attractions</h3>
+                            <ul class="info-list">
+                        `;
+                        
+                        research.attractions.forEach(attraction => {
+                            resultsHTML += `<li>${attraction}</li>`;
+                        });
+                        
+                        resultsHTML += `</ul>`;
+                    }
+                    
+                    // Cuisine
+                    if (research.cuisine && research.cuisine.length > 0) {
+                        resultsHTML += `
+                            <h3 class="section-title"><i class="fas fa-utensils"></i> Local Cuisine</h3>
+                            <ul class="info-list">
+                        `;
+                        
+                        research.cuisine.forEach(dish => {
+                            resultsHTML += `<li>${dish}</li>`;
+                        });
+                        
+                        resultsHTML += `</ul>`;
+                    }
+                    
+                    // Cultural Norms
+                    if (research.cultural_norms && research.cultural_norms.length > 0) {
+                        resultsHTML += `
+                            <h3 class="section-title"><i class="fas fa-globe"></i> Cultural Tips</h3>
+                            <ul class="info-list">
+                        `;
+                        
+                        research.cultural_norms.forEach(norm => {
+                            resultsHTML += `<li>${norm}</li>`;
+                        });
+                        
+                        resultsHTML += `</ul>`;
+                    }
+                    
+                    // Accommodation Areas
+                    if (research.accommodation_areas && research.accommodation_areas.length > 0) {
+                        resultsHTML += `
+                            <h3 class="section-title"><i class="fas fa-bed"></i> Best Areas to Stay</h3>
+                            <ul class="info-list">
+                        `;
+                        
+                        research.accommodation_areas.forEach(area => {
+                            resultsHTML += `<li>${area}</li>`;
+                        });
+                        
+                        resultsHTML += `</ul>`;
+                    }
+                    
+                    // Transportation Tips
+                    if (research.transportation_tips && research.transportation_tips.length > 0) {
+                        resultsHTML += `
+                            <h3 class="section-title"><i class="fas fa-bus"></i> Getting Around</h3>
+                            <ul class="info-list">
+                        `;
+                        
+                        research.transportation_tips.forEach(tip => {
+                            resultsHTML += `<li>${tip}</li>`;
+                        });
+                        
+                        resultsHTML += `</ul>`;
+                    }
+                }
+                
+                resultsHTML += `
+                    </div>
+                </div>
+                `;
+                
+                // Itinerary Section
+                if (plan.itinerary && plan.itinerary.daily_schedules) {
+                    resultsHTML += `
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-calendar-alt"></i> Detailed Itinerary
+                        </div>
+                        <div class="card-body">
+                    `;
+                    
+                    plan.itinerary.daily_schedules.forEach(day => {
+                        resultsHTML += `
+                            <div class="itinerary-day">
+                                <h3 class="day-title"><i class="fas fa-calendar-day"></i> Day ${day.day}</h3>
+                        `;
+                        
+                        day.activities.forEach(activity => {
+                            resultsHTML += `
+                                <div class="activity">
+                                    <div class="activity-time">${activity.time}</div>
+                                    <div class="activity-details">
+                                        <div class="activity-name">${activity.activity}</div>
+                                        <div class="activity-location">
+                                            <i class="fas fa-map-marker-alt"></i> ${activity.location}
+                                        </div>
+                                        <div class="activity-transport">
+                                            <i class="fas fa-car"></i> ${activity.transportation}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        resultsHTML += `</div>`;
+                    });
+                    
+                    resultsHTML += `
+                        </div>
+                    </div>
+                    `;
+                }
+                
+                // Budget Section
+                if (plan.budget) {
+                    const budget = plan.budget;
+                    
+                    resultsHTML += `
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-wallet"></i> Budget Breakdown
+                        </div>
+                        <div class="card-body">
+                            <h3 class="section-title"><i class="fas fa-money-bill-wave"></i> Total Budget: <span style="color: var(--primary);">${budget.total_cost}</span></h3>
+                            
+                            <div class="budget-container">
+                    `;
+
+                    console.log(budget);
+
+                    if (budget.travel) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-plane"></i> Travel </div>
+                                <div class="budget-value">${budget.travel.cost}</div>
+                                <div class="budget-details">${budget.travel.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    
+                    if (budget.accommodation) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-hotel"></i> Accommodation</div>
+                                <div class="budget-value">${budget.accommodation.cost}</div>
+                                <div class="budget-details">${budget.accommodation.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (budget.transportation) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-train"></i> Transportation</div>
+                                <div class="budget-value">${budget.transportation.cost}</div>
+                                <div class="budget-details">${budget.transportation.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (budget.activities) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-hiking"></i> Activities</div>
+                                <div class="budget-value">${budget.activities.cost}</div>
+                                <div class="budget-details">${budget.activities.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (budget.meals) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-utensils"></i> Meals</div>
+                                <div class="budget-value">${budget.meals.cost}</div>
+                                <div class="budget-details">${budget.meals.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (budget.emergency_fund) {
+                        resultsHTML += `
+                            <div class="budget-item">
+                                <div class="budget-title"><i class="fas fa-medkit"></i> Emergency Fund</div>
+                                <div class="budget-value">${budget.emergency_fund.cost}</div>
+                                <div class="budget-details">${budget.emergency_fund.details}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    resultsHTML += `
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }
+                
+                // Set the results
+                results.innerHTML = resultsHTML;
+            }
+            
+            // Initialize interest count
+            updateInterestCount();
+        });
+    </script>
+</body>
+</html> 
