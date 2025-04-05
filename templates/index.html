@@ -894,6 +894,168 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        .download-section {
+            text-align: center;
+            margin: 20px 0 40px;
+        }
+        
+        .download-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+        }
+        
+        .download-btn:hover {
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-form-group {
+            margin-bottom: 20px;
+        }
+        
+        .modal-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-grey);
+        }
+        
+        .modal-form-group input, .modal-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .modal-form-group input:focus, .modal-form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.1);
+        }
+        
+        .modal-form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-btn-cancel {
+            background-color: #f5f5f5;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        
+        .modal-btn-cancel:hover {
+            background-color: #eee;
+        }
+        
+        .modal-btn-download {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .modal-btn-download:hover {
+            background-color: var(--dark-blue);
+        }
     </style>
 </head>
 <body>
@@ -966,15 +1128,14 @@
             <form id="tripForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="travelType">Travel Type</label>
-                        <select id="travelType" class="form-control" required>
-                            <option value="">Select Travel Type</option>
-                            <option value="Leisure">Leisure</option>
-                            <option value="Business">Business</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Cultural">Cultural</option>
-                        </select>
-                        <div class="error-message" id="travelTypeError">Please select a travel type</div>
+                        <label for="dreamCity">Dream Tour City</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="dreamCity" class="form-control" placeholder="E.g., Paris" style="flex-grow: 1;">
+                            <button type="button" id="surpriseMeBtn" class="btn" style="width: auto; margin: 0; padding: 10px 15px; background: var(--secondary);">
+                                <i class="fas fa-random"></i> Surprise Me
+                            </button>
+                        </div>
+                        <div class="error-message" id="dreamCityError">Please enter a city or select "Surprise Me"</div>
                     </div>
                     <div class="form-group">
                         <label for="season">Season</label>
@@ -991,6 +1152,11 @@
                         <label for="duration">Trip Duration (days)</label>
                         <input type="number" id="duration" class="form-control" min="1" max="30" value="7" required>
                         <div class="error-message" id="durationError">Please enter a valid duration (1-30 days)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="people">Number of People</label>
+                        <input type="number" id="people" class="form-control" min="1" max="20" value="1" required>
+                        <div class="error-message" id="peopleError">Please enter a valid number of people (1-20)</div>
                     </div>
                 </div>
                 
@@ -1026,6 +1192,42 @@
                                     <input type="checkbox" id="interest-nightlife" name="interests" value="Nightlife">
                                     <label for="interest-nightlife"><i class="fas fa-moon"></i> Nightlife</label>
                                 </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-architecture" name="interests" value="Architecture">
+                                    <label for="interest-architecture"><i class="fas fa-building"></i> Architecture</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-wellness" name="interests" value="Wellness">
+                                    <label for="interest-wellness"><i class="fas fa-heart"></i> Wellness</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-adventure" name="interests" value="Adventure">
+                                    <label for="interest-adventure"><i class="fas fa-mountain"></i> Adventure</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-music" name="interests" value="Music">
+                                    <label for="interest-music"><i class="fas fa-music"></i> Music</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-literature" name="interests" value="Literature">
+                                    <label for="interest-literature"><i class="fas fa-book"></i> Literature</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-performing-arts" name="interests" value="Performing Arts">
+                                    <label for="interest-performing-arts"><i class="fas fa-theater-masks"></i> Performing Arts</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-sports-tourism" name="interests" value="Sports Tourism">
+                                    <label for="interest-sports-tourism"><i class="fas fa-futbol"></i> Sports Tourism</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-luxury-travel" name="interests" value="Luxury Travel">
+                                    <label for="interest-luxury-travel"><i class="fas fa-crown"></i> Luxury Travel</label>
+                                </div>
+                                <div class="interest-chip">
+                                    <input type="checkbox" id="interest-photography" name="interests" value="Photography">
+                                    <label for="interest-photography"><i class="fas fa-camera"></i> Photography</label>
+                                </div>
                             </div>
                             <div class="error-message" id="interestError">Please select at least one interest</div>
                         </div>
@@ -1048,10 +1250,19 @@
                         </select>
                         <div class="error-message" id="budgetCurrencyError">Please select a currency</div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="budgetValueGroup">
                         <label for="budget">Budget Amount</label>
                         <input type="number" id="budget" class="form-control" min="100" max="100000" value="5000" required>
                         <div class="error-message" id="budgetError">Please enter a valid budget (100-100,000)</div>
+                    </div>
+                    <div class="form-group" id="budgetTypeGroup" style="display: none;">
+                        <label for="budgetType">Budget Level</label>
+                        <select id="budgetType" class="form-control">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <div class="error-message" id="budgetTypeError">Please select a budget level</div>
                     </div>
                 </div>
                 
@@ -1069,6 +1280,32 @@
         
         <div id="results">
             <!-- Results will be inserted here by JavaScript -->
+        </div>
+        
+        <!-- Download PDF Modal -->
+        <div class="modal-overlay" id="downloadModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="modal-title">Download Your Travel Plan</div>
+                    <button class="modal-close" id="modalClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-form-group">
+                        <label for="tripName">Trip Name *</label>
+                        <input type="text" id="tripName" placeholder="E.g., Summer Vacation in Paris" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="tripDescription">Trip Description (Optional)</label>
+                        <textarea id="tripDescription" placeholder="Add any notes or special details about your trip"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn modal-btn-cancel" id="cancelDownload">Cancel</button>
+                    <button class="modal-btn modal-btn-download" id="confirmDownload">Download PDF</button>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1100,6 +1337,42 @@
             const generateButton = document.getElementById('generateButton');
             const interestCount = document.getElementById('interestCount');
             const interestCheckboxes = document.querySelectorAll('input[name="interests"]');
+            const dreamCityInput = document.getElementById('dreamCity');
+            const surpriseMeBtn = document.getElementById('surpriseMeBtn');
+            const budgetValueGroup = document.getElementById('budgetValueGroup');
+            const budgetTypeGroup = document.getElementById('budgetTypeGroup');
+            
+            // Setup Surprise Me button
+            surpriseMeBtn.addEventListener('click', function() {
+                dreamCityInput.value = "Surprise Me";
+                dreamCityInput.setAttribute('readonly', true);
+                dreamCityInput.style.backgroundColor = '#f0f0f0';
+                
+                // Show numeric budget input, hide budget type dropdown
+                budgetValueGroup.style.display = 'block';
+                budgetTypeGroup.style.display = 'none';
+            });
+            
+            // Setup Dream City input
+            dreamCityInput.addEventListener('input', function() {
+                if (this.value && this.value !== "Surprise Me") {
+                    // Show budget type dropdown, hide numeric budget input
+                    budgetValueGroup.style.display = 'none';
+                    budgetTypeGroup.style.display = 'block';
+                    
+                    // Remove readonly if user types after clicking Surprise Me
+                    this.removeAttribute('readonly');
+                    this.style.backgroundColor = '';
+                } else if (!this.value) {
+                    // If empty, show numeric budget
+                    budgetValueGroup.style.display = 'block';
+                    budgetTypeGroup.style.display = 'none';
+                    
+                    // Remove readonly if user clears after clicking Surprise Me
+                    this.removeAttribute('readonly');
+                    this.style.backgroundColor = '';
+                }
+            });
             
             // Update interest count when checkboxes change
             function updateInterestCount() {
@@ -1134,13 +1407,13 @@
             function validateForm() {
                 let isValid = true;
                 
-                // Check travel type
-                const travelType = document.getElementById('travelType').value;
-                if (!travelType) {
-                    showError('travelTypeError', true);
+                // Check city (either dream city or surprise me should be selected)
+                const dreamCity = dreamCityInput.value.trim();
+                if (!dreamCity) {
+                    showError('dreamCityError', true);
                     isValid = false;
                 } else {
-                    showError('travelTypeError', false);
+                    showError('dreamCityError', false);
                 }
                 
                 // Check season
@@ -1188,13 +1461,31 @@
                     showError('budgetCurrencyError', false);
                 }
                 
-                // Check budget
-                const budget = parseInt(document.getElementById('budget').value);
-                if (isNaN(budget) || budget < 100 || budget > 100000) {
-                    showError('budgetError', true);
+                // Check budget (either amount or type depending on which is visible)
+                if (budgetValueGroup.style.display !== 'none') {
+                    const budget = parseInt(document.getElementById('budget').value);
+                    if (isNaN(budget) || budget < 100 || budget > 100000) {
+                        showError('budgetError', true);
+                        isValid = false;
+                    } else {
+                        showError('budgetError', false);
+                    }
+                } else {
+                    if (!document.getElementById('budgetType').value) {
+                        showError('budgetTypeError', true);
+                        isValid = false;
+                    } else {
+                        showError('budgetTypeError', false);
+                    }
+                }
+                
+                // Check number of people
+                const people = parseInt(document.getElementById('people').value);
+                if (isNaN(people) || people < 1 || people > 20) {
+                    showError('peopleError', true);
                     isValid = false;
                 } else {
-                    showError('budgetError', false);
+                    showError('peopleError', false);
                 }
                 
                 // Check API key
@@ -1214,11 +1505,11 @@
                     return;
                 }
                 
-                // Get all the values from the form
-                const travelType = document.getElementById('travelType').value;
+                // Get the values from the form
                 const season = document.getElementById('season').value;
                 const duration = parseInt(document.getElementById('duration').value);
                 const apiKey = apiKeyInput.value.trim();
+                const dreamCity = dreamCityInput.value.trim();
                 
                 // Get selected interests
                 const selectedInterests = [];
@@ -1228,7 +1519,18 @@
                 
                 const startCity = document.getElementById('startCity').value.trim();
                 const budgetCurrency = document.getElementById('budgetCurrency').value;
-                const budget = parseInt(document.getElementById('budget').value);
+                
+                // Determine budget value based on which input is visible
+                let budget;
+                let budgetType;
+                
+                if (budgetValueGroup.style.display !== 'none') {
+                    budget = parseInt(document.getElementById('budget').value);
+                    budgetType = null;
+                } else {
+                    budget = null;
+                    budgetType = document.getElementById('budgetType').value;
+                }
                 
                 // Show the loader
                 loader.style.display = 'block';
@@ -1237,14 +1539,25 @@
                 // Prepare the data to send
                 const tripData = {
                     OPENAI_API_KEY: apiKey,
-                    travel_type: travelType,
                     interests: selectedInterests,
                     season: season,
                     duration: duration,
                     budget_currency: budgetCurrency,
-                    budget: budget,
-                    start_city: startCity
+                    start_city: startCity,
+                    people: parseInt(document.getElementById('people').value)
                 };
+                
+                // Add dream city if not "Surprise Me"
+                if (dreamCity && dreamCity !== "Surprise Me") {
+                    tripData.selected_city = dreamCity;
+                }
+                
+                // Add appropriate budget
+                if (budget !== null) {
+                    tripData.budget = budget;
+                } else if (budgetType !== null) {
+                    tripData.budget = budgetType;
+                }
                 
                 // Scroll to loader
                 loader.scrollIntoView({ behavior: 'smooth' });
@@ -1269,6 +1582,8 @@
                     loader.style.display = 'none';
                     
                     if (data.success) {
+                        // Attach the plan_id to the plan object for later use
+                        data.plan.plan_id = data.plan_id;
                         displayResults(data.plan);
                         results.style.display = 'block';
                         // Smooth scroll to results
@@ -1506,12 +1821,119 @@
                     `;
                 }
                 
+                // Add download button at the end
+                resultsHTML += `
+                <div class="download-section">
+                    <button class="download-btn" id="downloadPlanBtn">
+                        <i class="fas fa-file-pdf"></i> Download Travel Plan as PDF
+                    </button>
+                </div>
+                `;
+                
                 // Set the results
                 results.innerHTML = resultsHTML;
+                
+                // Store the plan ID as a data attribute on the button
+                const downloadBtn = document.getElementById('downloadPlanBtn');
+                downloadBtn.setAttribute('data-plan-id', plan.plan_id);
+                
+                // Add event listener for download button
+                downloadBtn.addEventListener('click', function() {
+                    const planId = this.getAttribute('data-plan-id');
+                    showDownloadModal(planId);
+                });
             }
             
             // Initialize interest count
             updateInterestCount();
+            
+            // Download PDF functionality
+            let currentPlanId = null;
+            const downloadModal = document.getElementById('downloadModal');
+            const modalClose = document.getElementById('modalClose');
+            const cancelDownload = document.getElementById('cancelDownload');
+            const confirmDownload = document.getElementById('confirmDownload');
+            const tripNameInput = document.getElementById('tripName');
+            const tripDescriptionInput = document.getElementById('tripDescription');
+            
+            function showDownloadModal(planId) {
+                currentPlanId = planId;
+                downloadModal.style.display = 'flex';
+                // Set default trip name based on destination
+                const destination = document.querySelector('.destination-name')?.textContent || 'My Trip';
+                tripNameInput.value = `Trip to ${destination}`;
+                tripDescriptionInput.value = '';
+                
+                // Focus on the trip name input
+                setTimeout(() => {
+                    tripNameInput.focus();
+                }, 100);
+            }
+            
+            function hideDownloadModal() {
+                downloadModal.style.display = 'none';
+                currentPlanId = null;
+            }
+            
+            // Event listeners for modal
+            modalClose.addEventListener('click', hideDownloadModal);
+            cancelDownload.addEventListener('click', hideDownloadModal);
+            
+            // Click outside modal to close
+            downloadModal.addEventListener('click', function(e) {
+                if (e.target === downloadModal) {
+                    hideDownloadModal();
+                }
+            });
+            
+            // Handle the download process
+            confirmDownload.addEventListener('click', function() {
+                if (!tripNameInput.value.trim()) {
+                    alert('Please enter a trip name');
+                    return;
+                }
+                
+                if (!currentPlanId) {
+                    alert('Error: No travel plan found to download');
+                    return;
+                }
+                
+                const downloadData = {
+                    plan_id: currentPlanId,
+                    trip_name: tripNameInput.value.trim(),
+                    trip_description: tripDescriptionInput.value.trim()
+                };
+                
+                // Show loading state
+                confirmDownload.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                confirmDownload.disabled = true;
+                
+                // Create form and submit it
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/download_pdf';
+                form.style.display = 'none';
+                
+                // Add the data as hidden inputs
+                for (const key in downloadData) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = downloadData[key];
+                    form.appendChild(input);
+                }
+                
+                // Add to the body and submit
+                document.body.appendChild(form);
+                form.submit();
+                
+                // Reset the modal
+                setTimeout(() => {
+                    confirmDownload.innerHTML = 'Download PDF';
+                    confirmDownload.disabled = false;
+                    hideDownloadModal();
+                }, 1000);
+            });
         });
     </script>
 </body>

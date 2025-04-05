@@ -1,8 +1,11 @@
-from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for, flash, make_response
 from trip_agents import TripCrew
 from dotenv import load_dotenv
 import os
 import json
+import io
+from weasyprint import HTML, CSS
+from datetime import datetime
 
 import supabase
 from supabase.client import Client, ClientOptions
@@ -20,6 +23,10 @@ os.environ["OTEL_SDK_DISABLED"] = "true"
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "default-secret-key-for-sessions")
+
+# Store generated plans temporarily in memory
+# In a production app, use a proper database
+generated_plans = {}
 
 # Authentication decorator
 def login_required(f):
@@ -133,15 +140,32 @@ def generate_plan():
         OPENAI_API_KEY = data.get('OPENAI_API_KEY')
         os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
         
+        # Prepare the inputs for the TripCrew
         inputs = {
-            "travel_type": data.get('travel_type'),
             "interests": data.get('interests', []),
             "season": data.get('season'),
             "duration": data.get('duration'),
-            "budget": f"{data.get('budget_currency')} {data.get('budget')}",
-            "start_city": data.get('start_city')
+            "start_city": data.get('start_city'),
+            "people": data.get('people')
         }
         
+        # Handle the budget - could be a number or a string (Low/Medium/High)
+        budget = data.get('budget')
+        budget_currency = data.get('budget_currency')
+        
+        if budget is not None:
+            if isinstance(budget, int) or (isinstance(budget, str) and budget.isdigit()):
+                # Numeric budget
+                inputs["budget"] = f"{budget_currency} {budget}"
+            else:
+                # Text budget (Low/Medium/High)
+                inputs["budget"] = f"{budget} ({budget_currency})"
+        
+        # Add selected_city only if it exists
+        if 'selected_city' in data:
+            inputs["selected_city"] = data.get('selected_city')
+        
+        print(inputs)
         # Run the TripCrew and capture the result
         crew_output = TripCrew(inputs).run()
         
@@ -159,8 +183,57 @@ def generate_plan():
                     # If all parsing fails, use as is
                     pass
         
-        return jsonify({"success": True, "plan": crew_output})
+        # Generate a unique ID for this plan and store it
+        plan_id = datetime.now().strftime("%Y%m%d%H%M%S") + str(hash(str(crew_output)))[0:6]
+        generated_plans[plan_id] = {
+            "plan": crew_output,
+            "inputs": inputs
+        }
+        
+        return jsonify({"success": True, "plan": crew_output, "plan_id": plan_id})
     
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/download_pdf', methods=['POST'])
+@login_required
+def download_pdf():
+    try:
+        plan_id = request.form.get('plan_id')
+        trip_name = request.form.get('trip_name', 'My Trip Plan')
+        trip_description = request.form.get('trip_description', '')
+        
+        # Retrieve the stored plan
+        if plan_id not in generated_plans:
+            return jsonify({"success": False, "error": "Plan not found"}), 404
+        
+        plan_data = generated_plans[plan_id]
+        plan = plan_data["plan"]
+        inputs = plan_data["inputs"]
+        
+        # Generate HTML content for PDF
+        html_content = render_template(
+            'plan_pdf.html',
+            plan=plan,
+            inputs=inputs,
+            trip_name=trip_name,
+            trip_description=trip_description,
+            generated_date=datetime.now().strftime("%Y-%m-%d")
+        )
+        
+        # Generate PDF from HTML
+        html = HTML(string=html_content, base_url=request.url_root)
+        pdf_file = io.BytesIO()
+        html.write_pdf(pdf_file)
+        pdf_file.seek(0)
+        
+        # Create response with PDF
+        response = make_response(pdf_file.getvalue())
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = f'attachment; filename="{trip_name.replace(" ", "_")}_TravelPlan.pdf"'
+        
+        return response
+        
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 

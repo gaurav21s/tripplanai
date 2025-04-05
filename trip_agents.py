@@ -22,10 +22,10 @@ class TripAgents:
         
     def city_selector_agent(self):
         return Agent(
-            role='City Selection Expert',
-            goal='Identify best cities to visit based on user preferences',
+            role='City Selection and Geography Expert',
+            goal='Identify best cities to visit based on user preferences and specially budget',
             backstory=(
-                "An expert travel geographer with extensive knowledge about world cities "
+                "An expert travel geographer with extensive knowledge about world cities and local cities and experience."
                 "and their cultural, historical, and entertainment offerings"
             ),
             llm=self.llm,
@@ -62,6 +62,16 @@ class TripAgents:
             verbose=False,
             cache=False
         )
+        
+    def budget_check_agent(self):
+        return Agent(
+            role='Budget and Expense Checker',
+            goal="Check if the budget is within the budget expectations",
+            backstory="A financial expert who checks if the budget plan is making sense and is within the budget expectations",
+            llm=self.llm,
+            verbose=False,
+            cache=False
+        )
 
 class TripTasks:
     def __init__(self):
@@ -71,12 +81,19 @@ class TripTasks:
         return Task(
             name="city_selection",
             description=(
-                f"Analyze user preferences, current city, budget and select best destinations:\n"
-                f"- Travel Type: {inputs['travel_type']}\n"
+                f"Analyze user preferences, current city, budget, duration, and select the best destination:\n"
                 f"- Interests: {inputs['interests']}\n"
                 f"- Season: {inputs['season']}\n"
                 f"- User current city: {inputs['start_city']}\n"
                 f"- Budget: {inputs['budget']}\n"
+                f"- Duration: {inputs['duration']}\n"
+                f"- No of People: {inputs['people']}\n"
+                "Logic to strictly follow:\n"
+                "- Prioritize cities that fit **within the given budget**. No city should be recommended if it exceeds the budget when considering travel, stay, and basic expenses.\n"
+                "- If budget is low, strictly prefer affordable cities, hidden gems, or lesser-known local destinations that still align with the user's interests.\n"
+                "- If the user has many interests, a higher number of people, or a longer trip duration with limited budget, lean more toward cost-effective local or regional experiences.\n"
+                "- Only suggest well-known/popular cities if the budget comfortably allows.\n"
+                "- Also consider distance from the user's current city to reduce travel cost and recommend cities that optimize value for money.\n"
                 "Output: Provide 1 city option with a brief rationale.\n"
                 "- Be crisp and concise\n"
                 "- Do not include any other text or comments in your response\n"
@@ -90,12 +107,13 @@ class TripTasks:
             """
         )
     
-    def city_research_task(self, agent, city):
+    def city_research_task(self, agent, city, inputs):
         return Task(
             name="city_research",
             description=(
                 f"Provide detailed quick insights about {city} including:\n"
-                "- Top 5 attractions\n"
+                "- Top and famous attractions\n"
+                f"- Tips for {city} based on the season {inputs['season']}\n"
                 "- Local cuisine highlights\n"
                 "- Cultural norms/etiquette\n"
                 "- Recommended accommodation areas\n"
@@ -119,11 +137,11 @@ class TripTasks:
         return Task(
             name="itinerary",
             description=(
-                f"Create a {inputs['duration']}-day itinerary including:\n"
-                "- Daily schedule with time allocations\n"
+                f"Create a {inputs['duration']}-day itinerary for {inputs['people']} people, keeping the interests list {inputs['interests']} in mind including:\n"
+                "- Daily schedule with time (24 hours format) allocations\n"
                 "- Activity sequencing\n"
                 "- Transportation between locations\n"
-                "- Meal planning suggestions\n"
+                "- Meal planning suggestions(Breakfast: 07:00 – 09:00, Lunch: 12:00 – 14:00, Dinner: 19:00 – 21:00)\n"
                 "- Be crisp and concise\n"
                 "- Do not include any other text or comments in your response\n"
             ),
@@ -150,15 +168,16 @@ class TripTasks:
     
     def budget_planning_task(self, agent, inputs, itinerary,selected_city):
         return Task(
-            name="budget",
+            name="budget_plan",
             description=(
-                f"Create a budget plan for {inputs['budget']} from the current city {inputs['start_city']} to the selected city {selected_city} covering:\n"
-                "- Flight/Train/Bus costs\n"
+                f"Create a budget plan for {inputs['budget']} budget from the current city {inputs['start_city']} to the selected city {selected_city} for {inputs['people']} people covering:\n"
+                "- Round Trip Flight/Train/Bus costs (make sure to include the cost of the return trip via checking online from multiple sources)\n"
                 "- Accommodation costs\n"
                 "- Transportation expenses\n"
                 "- Activity fees\n"
                 "- Meal budget\n"
                 "- Emergency funds allocation\n"
+                "- Total cost should be equal to all this expenses\n"
                 "- Be crisp and concise\n"
                 "- Do not include any other text or comments in your response\n"
             ),
@@ -171,8 +190,34 @@ class TripTasks:
                 "transportation": {"cost": "number", "details": "string"},
                 "activities": {"cost": "number", "details": "string"},
                 "meals": {"cost": "number", "details": "string"},
-                "emergency_fund": {"cost": "number", "details": "string"},
-                "total_cost": "number"
+                "emergency_fund": {"cost": "number", "details": "string = Allocation for unforeseen expenses"},
+                "total_cost": "number(should be equal to all the expenses)"
+            }
+            """        
+        )
+        
+    def budget_check_task(self, agent, inputs, budget_plan,selected_city):
+        return Task(
+            name="budget_check",
+            description=(
+                f"Check if the budget is within the budget expectations for {inputs['budget']} budget from the current city {inputs['start_city']} to the selected city {selected_city} for {inputs['people']} people.\n"
+                "- Check the travel(flight/train/bus) costs again from multiple sources like (google, makemytrip, expedia, redbus, indigo, and other tourism and flight booking websites etc.)\n"
+                "- Check the accommodation costs again from multiple sources like (airbnb, booking.com, agoda, oyo, hotel websites etc.)\n"
+                "- Check total costs is actually the total of all the expenses\n"
+                "- Correct the budget plan if found any mistakes and then return the correct budget plan\n"
+                "- Do not include any other text or comments in your response\n"
+            ),
+            agent=agent,
+            context=[budget_plan],
+            expected_output="""
+            {
+                "travel": {"cost": "number", "details": "string (flight/train/bus ticket cost)"},
+                "accommodation": {"cost": "number", "details": "string"},
+                "transportation": {"cost": "number", "details": "string"},
+                "activities": {"cost": "number", "details": "string"},
+                "meals": {"cost": "number", "details": "string"},
+                "emergency_fund": {"cost": "number", "details": "string = Allocation for unforeseen expenses"},
+                "total_cost": "number(should be equal to all the expenses)",
             }
             """        
         )
@@ -192,6 +237,7 @@ class TripFlow(Flow):
             # User provided a city
             return self.inputs['selected_city']
         else:
+            print("start flow inputs",self.inputs)
             # No city provided, use city selector agent
             agents = TripAgents()
             tasks = TripTasks()
@@ -202,15 +248,16 @@ class TripFlow(Flow):
             crew = Crew(
                 agents=[city_selector],
                 tasks=[select_cities],
-                verbose=False,
+                verbose=True,
                 llm=self.llm
             )
             
             result = crew.kickoff()
             if hasattr(result, "tasks_output") and result.tasks_output:
                 try:
+                    print("result",result)
                     city_data = json.loads(result.tasks_output[0].raw)
-                    # print("city_data",city_data)
+                    print("city_data",city_data)
                     return city_data['selected_city']
                 except:
                     return "Paris"  # Fallback default
@@ -237,17 +284,18 @@ class TripCrew:
         local_expert = agents.local_expert_agent()
         travel_planner = agents.travel_planner_agent()
         budget_manager = agents.budget_manager_agent()
+        budget_check = agents.budget_check_agent()
         
         # Create Tasks with selected city
-        research_city = tasks.city_research_task(local_expert, selected_city)
+        research_city = tasks.city_research_task(local_expert, selected_city, self.inputs)
         create_itinerary = tasks.itinerary_creation_task(travel_planner, self.inputs, research_city)
-        plan_budget = tasks.budget_planning_task(budget_manager, self.inputs, create_itinerary,selected_city)
-        
+        budget_plan = tasks.budget_planning_task(budget_manager, self.inputs, create_itinerary,selected_city)
+        check_budget = tasks.budget_check_task(budget_check, self.inputs, budget_plan,selected_city)
         # Assemble Crew and run remaining tasks
         crew = Crew(
-            agents=[local_expert, travel_planner, budget_manager],
-            tasks=[research_city, create_itinerary, plan_budget],
-            verbose=False,
+            agents=[local_expert, travel_planner, budget_manager, budget_check],
+            tasks=[research_city, create_itinerary, budget_plan, check_budget],
+            verbose=True,
             planning=True,
             planning_llm=self.llm,
             cache=False,
