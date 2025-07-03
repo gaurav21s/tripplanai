@@ -1,4 +1,7 @@
-python-dotenv
-streamlit
-langchain-groq
+flask
+flask-cors
 crewai
+crewai-tools
+python-dotenv
+reportlab
+supabase
