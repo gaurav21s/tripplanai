@@ -45,7 +45,7 @@ supabase_client = create_client(supabase_url, supabase_key)
 os.environ["OTEL_SDK_DISABLED"] = "true"
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev_key_for_testing")
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "flask_key")
 CORS(app, resources={r"/*": {"origins": "*"}})
 # Configure app-specific logging
 app.logger.setLevel(logging.INFO)
@@ -1140,4 +1140,5 @@ def load_plans_from_file():
         return {}
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5005)
+    port = int(os.environ.get("PORT", 5005))
+    app.run(host="0.0.0.0", port=port, debug=False)
