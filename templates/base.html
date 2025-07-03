@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TravelPlanAI - Your AI Travel Companion{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block additional_css %}{% endblock %}
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('landing') }}">
+                <div class="logo-container">
+                    <i class="fas fa-plane-departure"></i>
+                    <h1>TravelPlanAI</h1>
+                </div>
+            </a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('landing') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                {% if session.get('authenticated') %}
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="#" id="manageApiKey">Manage API Key</a></li>
+                    <li class="user-profile">
+                        <a href="#">
+                            <i class="fas fa-user"></i>
+                            <span>{{ session.get('user', {}).get('full_name', 'User') }}</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="btn highlight-btn">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- API Key Modal -->
+    {% if session.get('authenticated') %}
+    <div class="modal" id="apiKeyModal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeApiKeyModal">&times;</span>
+            <h2>Manage OpenAI API Key</h2>
+            <p>Your API key is used to generate trip itineraries and will be stored in your session.</p>
+            <div class="form-group">
+                <label for="openai-api-key-input">Your OpenAI API Key:</label>
+                <div class="api-key-input-group">
+                    <input type="password" id="openai-api-key-input" class="form-control" placeholder="sk-...">
+                    <button id="toggleApiKeyVisibility" class="btn btn-sm">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button id="saveApiKeyBtn" class="btn">Save API Key</button>
+                <button id="clearApiKeyBtn" class="btn btn-secondary">Clear API Key</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TravelPlanAI</h3>
+                <p>Your personal AI travel companion that makes planning your next adventure effortless and exciting.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{ url_for('landing') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    {% if session.get('authenticated') %}
+                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>contact@travelplanai.com</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/gaurav-shrivastav-gs/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.linkedin.com/in/gaurav-shrivastav-gs/"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/gaurav-shrivastav-gs/"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/gaurav-shrivastav-gs/"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TravelPlanAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Base JavaScript for API Key Management -->
+    {% if session.get('authenticated') %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // API Key Modal
+            const manageApiKeyBtn = document.getElementById('manageApiKey');
+            const apiKeyModal = document.getElementById('apiKeyModal');
+            const closeApiKeyModal = document.getElementById('closeApiKeyModal');
+            const apiKeyInput = document.getElementById('openai-api-key-input');
+            const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+            const clearApiKeyBtn = document.getElementById('clearApiKeyBtn');
+            const toggleApiKeyBtn = document.getElementById('toggleApiKeyVisibility');
+            
+            // Helper functions for enhanced UX
+            function showValidationError(message) {
+                // Remove any existing error messages
+                const existingError = document.querySelector('.validation-error');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                // Create error message element
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'validation-error';
+                errorDiv.style.cssText = `
+                    background: linear-gradient(135deg, #fee, #fdd);
+                    border: 1px solid #fbb;
+                    color: #c53030;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    animation: slideIn 0.3s ease-out;
+                `;
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                
+                // Insert after the input group
+                const inputGroup = document.querySelector('.api-key-input-group');
+                if (inputGroup && inputGroup.parentNode) {
+                    inputGroup.parentNode.insertBefore(errorDiv, inputGroup.nextSibling);
+                    
+                    // Auto-remove after 5 seconds
+                    setTimeout(() => {
+                        if (errorDiv.parentNode) {
+                            errorDiv.style.animation = 'slideOut 0.3s ease-out';
+                            setTimeout(() => errorDiv.remove(), 300);
+                        }
+                    }, 5000);
+                }
+            }
+            
+            function showSuccessMessage(message) {
+                // Remove any existing messages
+                const existingMsg = document.querySelector('.success-message, .validation-error');
+                if (existingMsg) {
+                    existingMsg.remove();
+                }
+                
+                // Create success message element
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success-message';
+                successDiv.style.cssText = `
+                    background: linear-gradient(135deg, #e6fffa, #c6f6d5);
+                    border: 1px solid #9ae6b4;
+                    color: #2f855a;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    margin-top: 10px;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    animation: slideIn 0.3s ease-out;
+                `;
+                successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                
+                // Insert after the input group
+                const inputGroup = document.querySelector('.api-key-input-group');
+                if (inputGroup && inputGroup.parentNode) {
+                    inputGroup.parentNode.insertBefore(successDiv, inputGroup.nextSibling);
+                    
+                    // Auto-remove after 3 seconds
+                    setTimeout(() => {
+                        if (successDiv.parentNode) {
+                            successDiv.style.animation = 'slideOut 0.3s ease-out';
+                            setTimeout(() => successDiv.remove(), 300);
+                        }
+                    }, 3000);
+                }
+            }
+            
+            // User profile dropdown
+            const userProfileLinks = document.querySelectorAll('.user-profile > a');
+            const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+            
+            // API Key Modal functions
+            if (manageApiKeyBtn && apiKeyModal && closeApiKeyModal) {
+                // Fetch API key on page load
+                fetch('/get_api_key')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.api_key && apiKeyInput) {
+                            apiKeyInput.value = data.api_key;
+                        }
+                    })
+                    .catch(error => console.error('Error fetching API key:', error));
+                
+                // Toggle API Key Modal
+                manageApiKeyBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    apiKeyModal.style.display = 'block';
+                });
+                
+                closeApiKeyModal.addEventListener('click', function() {
+                    apiKeyModal.style.display = 'none';
+                });
+                
+                // Handle click outside modal
+                window.addEventListener('click', function(event) {
+                    if (event.target === apiKeyModal) {
+                        apiKeyModal.style.display = 'none';
+                    }
+                });
+                
+                // Save API Key
+                if (saveApiKeyBtn && apiKeyInput) {
+                    saveApiKeyBtn.addEventListener('click', function() {
+                        const apiKey = apiKeyInput.value.trim();
+                        if (!apiKey) {
+                            showValidationError('Please enter your OpenAI API key');
+                            return;
+                        }
+                        
+                        // Enhanced API key validation
+                        if (!apiKey.startsWith('sk-')) {
+                            showValidationError('OpenAI API keys typically start with "sk-". Please check your API key.');
+                            return;
+                        }
+                        
+                        if (apiKey.length < 20) {
+                            showValidationError('API key appears to be too short. Please check your API key.');
+                            return;
+                        }
+                        
+                        fetch('/save_api_key', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ api_key: apiKey }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Server responded with status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Save API key locally too (in case session gets lost)
+                                if (window.localStorage) {
+                                    try {
+                                        localStorage.setItem('openai_api_key', apiKey);
+                                    } catch (e) {
+                                        console.warn('Could not save API key to local storage:', e);
+                                    }
+                                }
+                                
+                                showSuccessMessage('API key saved successfully!');
+                                setTimeout(() => {
+                                    apiKeyModal.style.display = 'none';
+                                }, 1500);
+                            } else {
+                                showValidationError('Error: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error saving API key:', error);
+                            showValidationError('Error saving API key. Please try again.');
+                        });
+                    });
+                }
+                
+                // Clear API Key
+                if (clearApiKeyBtn) {
+                    clearApiKeyBtn.addEventListener('click', function() {
+                        if (confirm('Are you sure you want to clear your API key?')) {
+                            fetch('/clear_api_key', {
+                                method: 'POST',
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    if (apiKeyInput) apiKeyInput.value = '';
+                                    showSuccessMessage('API key cleared successfully!');
+                                    // Remove any existing validation messages
+                                    const existingError = document.querySelector('.validation-error');
+                                    if (existingError) {
+                                        existingError.remove();
+                                    }
+                                } else {
+                                    showValidationError('Error: ' + data.error);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error clearing API key:', error);
+                                showValidationError('Error clearing API key. Please try again.');
+                            });
+                        }
+                    });
+                }
+                
+                // Toggle API Key visibility
+                if (toggleApiKeyBtn && apiKeyInput) {
+                    toggleApiKeyBtn.addEventListener('click', function() {
+                        if (apiKeyInput.type === 'password') {
+                            apiKeyInput.type = 'text';
+                            toggleApiKeyBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                        } else {
+                            apiKeyInput.type = 'password';
+                            toggleApiKeyBtn.innerHTML = '<i class="fas fa-eye"></i>';
+                        }
+                    });
+                }
+            }
+            
+            // User dropdown menu functionality
+            userProfileLinks.forEach((link, index) => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropdownMenus[index].classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                dropdownMenus.forEach(menu => {
+                    if (menu.classList.contains('active')) {
+                        menu.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Ensure logout link works properly
+            const logoutLink = document.querySelector('a[href="/logout"]');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Clear localStorage when user logs out
+                    try {
+                        localStorage.removeItem('savedTripPlans');
+                        sessionStorage.removeItem('currentUserId');
+                        console.log('User logged out, localStorage cleared');
+                    } catch (error) {
+                        console.error('Error clearing localStorage:', error);
+                    }
+                    
+                    window.location.href = '/logout';
+                });
+            }
+        });
+    </script>
+    {% endif %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

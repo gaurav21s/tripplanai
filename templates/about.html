@@ -1,303 +1,1000 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - TravelPlan AI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Global Styles */
-        :root {
-            --primary: #008cff;
-            --secondary: #ff9800;
-            --dark-blue: #0b3d91;
-            --light-blue: #e6f7ff;
-            --grey: #f2f2f2;
-            --dark-grey: #333;
-            --white: #ffffff;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f9f9f9;
-            min-height: 100vh;
-        }
-        
-        /* Header Styles */
-        header {
-            background-color: var(--white);
-            box-shadow: var(--shadow);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 20px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark-grey);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        /* Main Content */
-        .about-container {
-            max-width: 1200px;
-            margin: 100px auto 40px;
-            padding: 0 20px;
-        }
-        
-        .about-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .about-header h1 {
-            color: var(--dark-blue);
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .about-header p {
-            color: var(--dark-grey);
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .about-section {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-        
-        .about-section h2 {
-            color: var(--dark-blue);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .about-section p {
-            color: var(--dark-grey);
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        .about-section ul {
-            list-style: none;
-            margin-top: 20px;
-        }
-        
-        .about-section ul li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            color: var(--dark-grey);
-        }
-        
-        .about-section ul li i {
-            color: var(--primary);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 40px 0 20px;
-            margin-top: 60px;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 20px;
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section ul li a {
-            color: var(--white);
-            text-decoration: none;
-        }
-        
-        .footer-section ul li a:hover {
-            text-decoration: underline;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="navbar">
-            <div class="logo">
-                <i class="fas fa-plane-departure"></i>
-                <span>TravelPlan AI</span>
+{% extends 'base.html' %}
+
+{% block title %}About - TravelPlanAI{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-background">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-icon">
+            <i class="fas fa-plane-departure"></i>
+        </div>
+        <h1 class="hero-title">About TravelPlanAI</h1>
+        <p class="hero-subtitle">Your personal AI travel companion that transforms travel planning from a chore into an exciting journey of discovery.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">10K+</span>
+                <span class="hero-stat-label">Happy Travelers</span>
             </div>
-            <div class="nav-links">
-                <a href="{{ url_for('landing') }}"><i class="fas fa-home"></i> Home</a>
-                <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+            <div class="hero-stat">
+                <span class="hero-stat-number">50+</span>
+                <span class="hero-stat-label">Countries</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">24/7</span>
+                <span class="hero-stat-label">AI Support</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Story</h2>
+            <p>Discover how a simple frustration sparked a revolution in travel planning</p>
+        </div>
+        <div class="story-content">
+            <div class="story-grid">
+                <div class="story-card">
+                    <div class="story-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>The Problem</h3>
+                    <p>TravelPlanAI was born from a simple insight: planning a trip should be as enjoyable as the trip itself. Yet for many travelers, creating an itinerary is often a time-consuming, stressful process.</p>
+                </div>
+                <div class="story-card">
+                    <div class="story-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>The Solution</h3>
+                    <p>Our founders, passionate travelers themselves, experienced this frustration firsthand. They envisioned a tool that would harness AI to make travel planning simple and personalized.</p>
+                </div>
+                <div class="story-card">
+                    <div class="story-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>The Impact</h3>
+                    <p>Today, TravelPlanAI helps thousands of travelers create personalized itineraries that perfectly match their interests, budgets, and travel styles - all in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="founder-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Meet Our Founder</h2>
+            <p>The visionary behind TravelPlanAI</p>
+        </div>
+        <div class="founder-card">
+            <div class="founder-image">
+                <img src="{{ url_for('static', filename='images/founder_image.jpeg') }}" alt="Gaurav Shrivastav">
+            </div>
+            <div class="founder-info">
+                <h3>Gaurav Shrivastav</h3>
+                <p class="founder-title">Founder & CEO</p>
+                <p class="founder-description">A passionate traveler and tech enthusiast who founded TravelPlanAI to revolutionize the way people plan their trips. With a background in AI and a love for exploration, Gaurav brings together cutting-edge technology and travel expertise.</p>
+                <div class="founder-links">
+                    <a href="https://www.linkedin.com/in/gaurav-shrivastav-gs/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/gaurav21s" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mission-section">
+    <div class="container">
+        <div class="mission-content">
+            <div class="mission-text">
+                <h2>Our Mission</h2>
+                <p>To empower travelers with AI-driven tools that make trip planning effortless, personalized, and inspiring.</p>
+                <div class="mission-highlights">
+                    <div class="mission-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Personalized travel experiences</span>
+                    </div>
+                    <div class="mission-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Time-saving AI technology</span>
+                    </div>
+                    <div class="mission-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Budget-friendly recommendations</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-image">
+                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Mission">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>How TravelPlanAI Works</h2>
+            <p>From preferences to perfect itinerary in four simple steps</p>
+        </div>
+        
+        <div class="features-timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div class="timeline-content">
+                    <h3>Tell Us Your Preferences</h3>
+                    <p>Share your destination, travel dates, interests, budget, and other preferences with our intelligent system.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                    <h3>AI Crafts Your Itinerary</h3>
+                    <p>Our advanced AI analyzes thousands of data points to create a personalized itinerary based on your unique interests.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div class="timeline-content">
+                    <h3>Detailed Planning</h3>
+                    <p>We provide day-by-day scheduling with realistic time allocations, travel logistics, local tips, and budget estimates.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                    <h3>Enjoy Your Journey</h3>
+                    <p>Download your custom itinerary or share it with travel companions. Follow the plan for a stress-free trip!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="benefits-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose TravelPlanAI</h2>
+            <p>Experience the future of travel planning</p>
+        </div>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Time-Saving</h3>
+                <p>What takes hours of research is done in seconds by our AI. No more endless browser tabs.</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <h3>Personalized</h3>
+                <p>Every itinerary is unique and tailored to your specific interests, travel style, and budget.</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Discover Hidden Gems</h3>
+                <p>Our AI recommends off-the-beaten-path attractions and local experiences you might not find elsewhere.</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h3>Budget-Friendly</h3>
+                <p>Set your budget, and we'll create an itinerary that respects your financial constraints without sacrificing quality.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Plan Your Dream Trip?</h2>
+            <p>Join thousands of travelers who have discovered the joy of effortless trip planning.</p>
+            <div class="cta-buttons">
                 {% if session.get('authenticated') %}
-                    <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <a href="{{ url_for('dashboard') }}" class="cta-button">
+                        <i class="fas fa-rocket"></i>
+                        Create Your Itinerary
+                    </a>
                 {% else %}
-                    <a href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
-                    <a href="{{ url_for('signup') }}"><i class="fas fa-user-plus"></i> Sign Up</a>
+                    <a href="{{ url_for('signup') }}" class="cta-button">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up for Free
+                    </a>
+                    <a href="{{ url_for('login') }}" class="cta-button cta-button-secondary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </a>
                 {% endif %}
             </div>
         </div>
-    </header>
+    </div>
+</section>
+{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* Modern fonts and general styling */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
     
-    <main class="about-container">
-        <div class="about-header">
-            <h1>About TravelPlan AI</h1>
-            <p>Your intelligent travel companion that makes trip planning smarter, faster, and more personalized.</p>
-        </div>
+    /* Hero Section */
+    .hero-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+    
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+    
+    .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite;
+    }
+    
+    .shape-1 {
+        width: 100px;
+        height: 100px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+    
+    .shape-2 {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+    }
+    
+    .shape-3 {
+        width: 80px;
+        height: 80px;
+        bottom: 30%;
+        left: 70%;
+        animation-delay: 4s;
+    }
+    
+    .shape-4 {
+        width: 120px;
+        height: 120px;
+        top: 40%;
+        left: 60%;
+        animation-delay: 6s;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(180deg); }
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        max-width: 900px;
+        padding: 0 20px;
+    }
+    
+    .hero-icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 40px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        animation: pulse 3s infinite;
+    }
+    
+    .hero-icon i {
+        font-size: 48px;
+        color: white;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        animation: fadeInUp 1s ease-out;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.4rem;
+        font-weight: 400;
+        line-height: 1.6;
+        margin-bottom: 50px;
+        opacity: 0.95;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+    
+    .hero-stat {
+        text-align: center;
+    }
+    
+    .hero-stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    .hero-stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Content Sections */
+    .content-section, .founder-section, .mission-section, .features-section, .benefits-section {
+        padding: 100px 0;
+        position: relative;
+    }
+    
+    .content-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .founder-section {
+        background: white;
+    }
+    
+    .mission-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .features-section {
+        background: white;
+    }
+    
+    .benefits-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+    
+    .section-title h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .section-title p {
+        font-size: 1.2rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    /* Story Section */
+    .story-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+    }
+    
+    .story-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .story-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(30, 115, 190, 0.15);
+    }
+    
+    .story-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        box-shadow: 0 10px 30px rgba(30, 115, 190, 0.3);
+    }
+    
+    .story-icon i {
+        font-size: 32px;
+        color: white;
+    }
+    
+    .story-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .story-card p {
+        color: #666;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+    
+    /* Founder Section */
+    .founder-card {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 60px;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 60px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .founder-image {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .founder-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .founder-info h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .founder-title {
+        font-size: 1.1rem;
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    
+    .founder-description {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        font-size: 1rem;
+    }
+    
+    .founder-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 20px;
+        box-shadow: 0 8px 20px rgba(30, 115, 190, 0.3);
+    }
+    
+    .social-link:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 15px 35px rgba(30, 115, 190, 0.4);
+    }
+    
+    /* Mission Section */
+    .mission-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+    }
+    
+    .mission-text h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .mission-text p {
+        color: #666;
+        line-height: 1.7;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+    
+    .mission-highlights {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .mission-highlight {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+    }
+    
+    .mission-highlight i {
+        color: var(--primary-color);
+        font-size: 20px;
+        width: 30px;
+        text-align: center;
+    }
+    
+    .mission-highlight span {
+        color: #555;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .mission-image {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .mission-image:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(30, 115, 190, 0.15);
+    }
+    
+    .mission-image img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .mission-image:hover img {
+        transform: scale(1.05);
+    }
+    
+    /* Timeline Section */
+    .features-timeline {
+        margin: 50px auto;
+        max-width: 800px;
+    }
+    
+    .timeline-item {
+        display: flex;
+        margin-bottom: 50px;
+        position: relative;
+    }
+    
+    .timeline-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: 20px;
+        width: 2px;
+        height: calc(100% + 30px);
+        background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        z-index: 0;
+    }
+    
+    .timeline-number {
+        min-width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+        z-index: 1;
+        margin-right: 30px;
+        box-shadow: 0 10px 25px rgba(30, 115, 190, 0.3);
+    }
+    
+    .timeline-content {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        flex: 1;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .timeline-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(30, 115, 190, 0.15);
+    }
+    
+    .timeline-content h3 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+    
+    .timeline-content p {
+        color: #666;
+        line-height: 1.6;
+        margin: 0;
+    }
+    
+    /* Benefits Grid */
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        margin-top: 50px;
+    }
+    
+    .benefit-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px 30px;
+        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(30, 115, 190, 0.15);
+    }
+    
+    .benefit-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        box-shadow: 0 10px 30px rgba(30, 115, 190, 0.3);
+    }
+    
+    .benefit-icon i {
+        font-size: 32px;
+        color: white;
+    }
+    
+    .benefit-card h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+    
+    .benefit-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 100px 0;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+                    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: float 20s ease-in-out infinite;
+    }
+    
+    .cta-content {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .cta-content p {
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+        opacity: 0.95;
+        line-height: 1.6;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 35px;
+        background: white;
+        color: var(--primary-color);
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-button-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .cta-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .cta-button:hover::before {
+        left: 100%;
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        color: var(--secondary-color);
+    }
+    
+    .cta-button-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .cta-button i {
+        transition: transform 0.3s ease;
+        font-size: 18px;
+    }
+    
+    .cta-button:hover i {
+        transform: translateX(5px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
         
-        <div class="about-content">
-            <div class="about-section">
-                <h2><i class="fas fa-robot"></i> Our Mission</h2>
-                <p>TravelPlan AI is revolutionizing the way people plan their trips by leveraging cutting-edge artificial intelligence technology. We believe that everyone deserves a personalized travel experience that matches their unique preferences and interests.</p>
-                <p>Our mission is to make travel planning accessible, efficient, and enjoyable for everyone, whether you're a seasoned traveler or planning your first adventure.</p>
-            </div>
-            
-            <div class="about-section">
-                <h2><i class="fas fa-star"></i> What We Offer</h2>
-                <ul>
-                    <li><i class="fas fa-check"></i> AI-powered travel recommendations</li>
-                    <li><i class="fas fa-check"></i> Personalized itineraries</li>
-                    <li><i class="fas fa-check"></i> Smart budget management</li>
-                    <li><i class="fas fa-check"></i> Local insights and tips</li>
-                    <li><i class="fas fa-check"></i> Easy-to-use interface</li>
-                </ul>
-            </div>
-            
-            <div class="about-section">
-                <h2><i class="fas fa-cogs"></i> How It Works</h2>
-                <p>Our platform uses advanced AI algorithms to analyze your travel preferences, interests, and requirements. By considering factors such as:</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> Travel style and preferences</li>
-                    <li><i class="fas fa-check"></i> Budget constraints</li>
-                    <li><i class="fas fa-check"></i> Time of travel</li>
-                    <li><i class="fas fa-check"></i> Personal interests</li>
-                </ul>
-                <p>We generate comprehensive travel plans that are tailored specifically to your needs.</p>
-            </div>
-            
-            <div class="about-section">
-                <h2><i class="fas fa-shield-alt"></i> Your Privacy</h2>
-                <p>We take your privacy seriously. Your personal information and travel preferences are:</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> Securely encrypted</li>
-                    <li><i class="fas fa-check"></i> Never shared with third parties</li>
-                    <li><i class="fas fa-check"></i> Used only to improve your travel experience</li>
-                    <li><i class="fas fa-check"></i> Under your complete control</li>
-                </ul>
-            </div>
-        </div>
-    </main>
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .hero-stats {
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat-number {
+            font-size: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+        }
+        
+        .story-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .founder-card {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .mission-content {
+            grid-template-columns: 1fr;
+            gap: 50px;
+        }
+        
+        .mission-image {
+            order: -1;
+        }
+        
+        .mission-text h2 {
+            font-size: 2rem;
+        }
+        
+        .benefits-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .cta-content h2 {
+            font-size: 2rem;
+        }
+        
+        .cta-content p {
+            font-size: 1.1rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .cta-button {
+            padding: 16px 30px;
+            font-size: 1rem;
+        }
+        
+        .timeline-item {
+            flex-direction: column;
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            display: none;
+        }
+        
+        .timeline-number {
+            margin-bottom: 20px;
+            margin-right: 0;
+        }
+    }
     
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>TravelPlan AI</h3>
-                <p>Your AI-powered travel planning companion</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="{{ url_for('landing') }}">Home</a></li>
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                    {% if session.get('authenticated') %}
-                        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('login') }}">Login</a></li>
-                        <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 TravelPlan AI. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html> 
+    @media (max-width: 480px) {
+        .hero-stats {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .story-card, .benefit-card {
+            padding: 30px 20px;
+        }
+        
+        .founder-card {
+            padding: 40px 30px;
+        }
+        
+        .mission-text h2 {
+            font-size: 1.8rem;
+        }
+        
+        .hero-stat-number {
+            font-size: 1.8rem;
+        }
+        
+        .cta-content h2 {
+            font-size: 1.8rem;
+        }
+        
+        .mission-image img {
+            height: 250px;
+        }
+    }
+</style>
+{% endblock %} 

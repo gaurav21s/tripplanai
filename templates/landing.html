@@ -1,547 +1,1548 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TravelPlan AI - Your Smart Travel Companion</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #008cff;
-            --secondary: #ff9800;
-            --dark-blue: #0b3d91;
-            --light-blue: #e6f7ff;
-            --grey: #f2f2f2;
-            --dark-grey: #333;
-            --white: #ffffff;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --gradient-primary: linear-gradient(135deg, #0077cc, #00a1ff);
-            --gradient-secondary: linear-gradient(135deg, #ff9800, #ff5722);
-        }
+{% extends 'base.html' %}
+
+{% block title %}TravelPlanAI - Plan Your Perfect Trip{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-slider">
+        <div class="slide active">
+            <img src="https://images.unsplash.com/photo-1571893544028-06b07af6dade?auto=format&fit=crop&w=1600&q=80" alt="Bali Beach">
+            <div class="slide-overlay" style="background: rgba(0, 0, 0, 0.2);"></div>
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1600&q=80" alt="New York City">
+            <div class="slide-overlay" style="background: rgba(0, 0, 0, 0.2);"></div>
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1506748686214-3a1e1b1c1e1e?auto=format&fit=crop&w=1600&q=80" alt="">
+            <div class="slide-overlay" style="background: rgba(0, 0, 0, 0.2);"></div>
+        </div>
+        <div class="slide-controls">
+            <button class="prev-slide"><i class="fas fa-chevron-left"></i></button>
+            <div class="slide-indicators">
+                <span class="indicator active" data-slide="0"></span>
+                <span class="indicator" data-slide="1"></span>
+                <span class="indicator" data-slide="2"></span>
+            </div>
+            <button class="next-slide"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+    <div class="hero-content">
+        <h1 class="hero-title">Your Perfect Trip, Planned in Seconds</h1>
+        <p class="hero-description">AI-powered itineraries tailored to your preferences, making travel planning effortless and exciting.</p>
+        {% if session.get('authenticated') %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-large">Start Planning</a>
+        {% else %}
+            <div class="hero-buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-large">Log In</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-large btn-secondary">Sign Up</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card card">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Choose Your Destination</h3>
+                <p>Tell us where you want to go or let our AI suggest the perfect destination based on your interests.</p>
+            </div>
+            <div class="feature-card card">
+                <div class="feature-icon">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <h3>Set Your Preferences</h3>
+                <p>From budget to activities, customize your trip to match exactly what you're looking for.</p>
+            </div>
+            <div class="feature-card card">
+                <div class="feature-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h3>Get Your Itinerary</h3>
+                <p>Our AI generates a detailed day-by-day plan with activities, accommodations, and transportation.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="destinations-section">
+    <div class="container">
+        <h2 class="section-title">Popular Destinations</h2>
+        <div class="destination-grid">
+            <div class="destination-card">
+                <div class="destination-img">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f" alt="Paris">
+                    <div class="destination-overlay">
+                        <a href="{{ url_for('dashboard') if session.get('authenticated') else url_for('login') }}" class="btn">Plan a Trip</a>
+                    </div>
+                </div>
+                <div class="destination-info">
+                    <h3 class="destination-name">Paris, France</h3>
+                    <p class="destination-description">The city of love and lights offering art, cuisine, and iconic landmarks.</p>
+                    <div class="destination-meta">
+                        <span><i class="fas fa-star"></i> 4.8/5</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-card">
+                <div class="destination-img">
+                    <img src="https://images.unsplash.com/photo-1571893544028-06b07af6dade" alt="Bali">
+                    <div class="destination-overlay">
+                        <a href="{{ url_for('dashboard') if session.get('authenticated') else url_for('login') }}" class="btn">Plan a Trip</a>
+                    </div>
+                </div>
+                <div class="destination-info">
+                    <h3 class="destination-name">Bali, Indonesia</h3>
+                    <p class="destination-description">A tropical paradise known for beautiful beaches, temples, and rich culture.</p>
+                    <div class="destination-meta">
+                        <span><i class="fas fa-star"></i> 4.7/5</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-card">
+                <div class="destination-img">
+                    <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0" alt="Tokyo">
+                    <div class="destination-overlay">
+                        <a href="{{ url_for('dashboard') if session.get('authenticated') else url_for('login') }}" class="btn">Plan a Trip</a>
+                    </div>
+                </div>
+                <div class="destination-info">
+                    <h3 class="destination-name">Tokyo, Japan</h3>
+                    <p class="destination-description">A blend of ultramodern and traditional, from neon-lit skyscrapers to historic temples.</p>
+                    <div class="destination-meta">
+                        <span><i class="fas fa-star"></i> 4.9/5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sample-itineraries-section">
+    <div class="container">
+        <h2 class="section-title">Plan Any Trip, Anywhere</h2>
+        <p class="section-description">Our AI can create personalized itineraries for any destination and travel style</p>
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        <div class="planning-showcase">
+            <div class="showcase-header">
+                <h3>From Your Preferences to Perfect Itinerary</h3>
+                <p>Simply tell us your destination, duration, interests, and budget - our AI does the rest</p>
+            </div>
+            
+            <div class="planning-demo">
+                <div class="demo-step">
+                    <div class="step-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Choose Destination</h4>
+                    <p>Tell us where you want to go or let AI suggest</p>
+                </div>
+                <div class="demo-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="demo-step">
+                    <div class="step-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h4>Set Preferences</h4>
+                    <p>Duration, budget, interests, and travel style</p>
+                </div>
+                <div class="demo-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="demo-step">
+                    <div class="step-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h4>Get Your Plan</h4>
+                    <p>Complete itinerary with activities and logistics</p>
+                </div>
+            </div>
+        </div>
         
-        body {
-            background-color: #f9f9f9;
-            color: #333;
+        <!-- City Examples Grid -->
+        <div class="city-examples">
+            <h3>Popular Destinations We Can Plan</h3>
+            <div class="cities-grid">
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1571893544028-06b07af6dade?auto=format&fit=crop&w=400&q=80" alt="Tropical Beach Destination">
+                    <div class="city-content">
+                        <h4>Tropical Paradise</h4>
+                        <p>Beach resorts, water sports, island hopping</p>
+                    </div>
+                </div>
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80" alt="European City">
+                    <div class="city-content">
+                        <h4>European Cities</h4>
+                        <p>Art, culture, history, and cuisine</p>
+                    </div>
+                </div>
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80" alt="Asian Metropolis">
+                    <div class="city-content">
+                        <h4>Asian Metropolis</h4>
+                        <p>Modern cities, traditional culture, food scenes</p>
+                    </div>
+                </div>
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1544913221-3141fa395d4b?auto=format&fit=crop&w=400&q=80" alt="Mountain Adventure">
+                    <div class="city-content">
+                        <h4>Mountain Adventures</h4>
+                        <p>Hiking, scenic views, outdoor activities</p>
+                    </div>
+                </div>
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=400&q=80" alt="Safari Adventure">
+                    <div class="city-content">
+                        <h4>Safari & Wildlife</h4>
+                        <p>Wildlife viewing, nature reserves, conservation</p>
+                    </div>
+                </div>
+                <div class="city-card">
+                    <img src="https://images.unsplash.com/photo-1585832759107-8b1b16ce61b4?auto=format&fit=crop&w=400&q=80" alt="Cultural Heritage">
+                    <div class="city-content">
+                        <h4>Cultural Heritage</h4>
+                        <p>Ancient sites, museums, local traditions</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="planning-cta">
+                {% if session.get('authenticated') %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-large">Start Planning Your Trip</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-large">Sign Up & Start Planning</a>
+                {% endif %}
+                <p class="cta-subtitle">Free to use • No credit card required • Plans ready in seconds</p>
+            </div>
+        </div>
+            
+            <!-- Card for Udaipur -->
+            <div class="itinerary-card card">
+                <div class="itinerary-header">
+                    <img src="https://images.unsplash.com/photo-1612810806695-30f7a8258391?auto=format&fit=crop&w=800&q=80" alt="Udaipur">
+                    <div class="itinerary-overlay">
+                        <h3>Udaipur, India</h3>
+                        <div class="itinerary-tags">
+                            <span class="tag">History</span>
+                            <span class="tag">Culture</span>
+                            <span class="tag">Architecture</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="itinerary-content">
+                    <div class="itinerary-details">
+                        <div class="itinerary-detail"><i class="fas fa-calendar-alt"></i> 3 Days</div>
+                        <div class="itinerary-detail"><i class="fas fa-user-friends"></i> 2 People</div>
+                        <div class="itinerary-detail"><i class="fas fa-rupee-sign"></i> Budget: INR 8,000</div>
+                    </div>
+                    <div class="itinerary-highlights">
+                        <h4>Highlights</h4>
+                        <ul>
+                            <li>City Palace & Boat Ride</li>
+                            <li>Explore Saheliyon-ki-Bari</li>
+                            <li>Visit Vintage Car Museum</li>
+                        </ul>
+                    </div>
+                    {% if session.get('authenticated') %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-block">Create Similar Trip</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-block">Log In to Create</a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Card for Bangkok -->
+            <div class="itinerary-card card">
+                <div class="itinerary-header">
+                    <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=800&q=80" alt="Bangkok">
+                    <div class="itinerary-overlay">
+                        <h3>Bangkok, Thailand</h3>
+                        <div class="itinerary-tags">
+                            <span class="tag">Shopping</span>
+                            <span class="tag">Nightlife</span>
+                            <span class="tag">Culture</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="itinerary-content">
+                    <div class="itinerary-details">
+                        <div class="itinerary-detail"><i class="fas fa-calendar-alt"></i> 5 Days</div>
+                        <div class="itinerary-detail"><i class="fas fa-user-friends"></i> 2 People</div>
+                        <div class="itinerary-detail"><i class="fas fa-rupee-sign"></i> Budget: INR 59,000</div>
+                    </div>
+                    <div class="itinerary-highlights">
+                        <h4>Highlights</h4>
+                        <ul>
+                            <li>Grand Palace & Wat Pho</li>
+                            <li>Chatuchak Weekend Market</li>
+                            <li>Day trip to Khao Yai</li>
+                        </ul>
+                    </div>
+                    {% if session.get('authenticated') %}
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-block">Create Similar Trip</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-block">Log In to Create</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="section-title">What Our Users Say</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card card">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left"></i>
+                    <p>TravelPlanAI made planning our family trip to Europe so easy! The itinerary was perfect and saved us hours of research.</p>
+                </div>
+                <div class="testimonial-author">
+                    <p><strong>Sarah M.</strong></p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card card">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left"></i>
+                    <p>As a solo traveler, I was amazed at how well the AI understood my preferences. My trip to Japan was exactly what I wanted!</p>
+                </div>
+                <div class="testimonial-author">
+                    <p><strong>David K.</strong></p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card card">
+                <div class="testimonial-content">
+                    <i class="fas fa-quote-left"></i>
+                    <p>We had a limited budget but still wanted an amazing honeymoon. The suggestions were perfect and kept us within our budget.</p>
+                </div>
+                <div class="testimonial-author">
+                    <p><strong>Emily & Jason T.</strong></p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Plan Your Dream Trip?</h2>
+            <p>Join TravelPlanAI today and experience hassle-free travel planning.</p>
+            {% if session.get('authenticated') %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-large">Create Your Itinerary</a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-large">Sign Up for Free</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* Modern fonts and general styling */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+        --primary-font: 'Montserrat', sans-serif;
+        --secondary-font: 'Poppins', sans-serif;
+    }
+    
+    .hero-section {
+        position: relative;
+        height: 100vh;
+        min-height: 700px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #3498db 100%);
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="heroGrid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23heroGrid)"/></svg>');
+        opacity: 0.3;
+        z-index: 1;
+    }
+    
+    .hero-slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    
+    .slide.active {
+        opacity: 1;
+    }
+    
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .slide-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .slide-controls {
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+    
+    .prev-slide, .next-slide {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin: 0 15px;
+    }
+    
+    .prev-slide:hover, .next-slide:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    .slide-indicators {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .indicator.active, .indicator:hover {
+        background: white;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        max-width: 900px;
+        padding: 40px 20px;
+        animation: heroFadeIn 1.2s ease-out;
+    }
+    
+    @keyframes heroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
         }
-        
-        /* Header Styles */
-        header {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 15px 0;
-            box-shadow: var(--shadow);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            font-size: 28px;
-        }
-        
-        .nav-links {
-            display: flex;
-            align-items: center;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        font-family: var(--primary-font);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        line-height: 1.1;
+        background: linear-gradient(45deg, #fff, rgba(255,255,255,0.8));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .hero-description {
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+        font-family: var(--secondary-font);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        line-height: 1.6;
+        font-weight: 400;
+        opacity: 0.95;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn-large {
+        padding: 18px 40px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.3);
+        min-width: 200px;
+    }
+    
+    .btn-large::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.6s;
+    }
+    
+    .btn-large:hover::before {
+        left: 100%;
+    }
+    
+    .btn-large:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    
+    .btn-secondary {
+        background: rgba(255,255,255,0.15);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255,255,255,0.25);
+    }
+    
+    .btn {
+        font-family: var(--primary-font);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .features-section {
+        padding: 120px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        position: relative;
+    }
+    
+    .features-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="featuresGrid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(30,115,190,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23featuresGrid)"/></svg>');
+        opacity: 0.5;
+    }
+    
+    .section-title {
+        font-size: 2.8rem;
+        color: #333;
+        margin-bottom: 70px;
+        text-align: center;
+        font-family: var(--primary-font);
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        border-radius: 2px;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 40px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .feature-card {
+        padding: 50px 40px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.95);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(30,115,190,0.05), rgba(52,152,219,0.05));
+        transition: left 0.6s ease;
+    }
+    
+    .feature-card:hover::before {
+        left: 0;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(30, 115, 190, 0.3);
+    }
+    
+    .feature-icon i {
+        font-size: 36px;
+        color: white;
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 15px 40px rgba(30, 115, 190, 0.4);
+    }
+    
+    .feature-card h3 {
+        margin-bottom: 15px;
+        color: var(--primary-color);
+        font-family: var(--primary-font);
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+    
+    .feature-card p {
+        color: #6c757d;
+        font-family: var(--secondary-font);
+        line-height: 1.6;
+    }
+    
+    .destinations-section {
+        padding: 100px 0;
+    }
+    
+    .destination-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+    }
+    
+    .destination-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s;
+    }
+    
+    .destination-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .destination-img {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+    
+    .destination-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+    
+    .destination-card:hover .destination-img img {
+        transform: scale(1.1);
+    }
+    
+    .destination-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .destination-card:hover .destination-overlay {
+        opacity: 1;
+    }
+    
+    .destination-info {
+        padding: 25px;
+    }
+    
+    .destination-name {
+        margin-bottom: 10px;
+        color: var(--primary-color);
+        font-family: var(--primary-font);
+        font-weight: 600;
+        font-size: 1.3rem;
+    }
+    
+    .destination-description {
+        margin-bottom: 15px;
+        color: #6c757d;
+        line-height: 1.6;
+        font-family: var(--secondary-font);
+    }
+    
+    .destination-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffc107;
+        font-weight: 500;
+    }
+    
+    /* Planning Showcase Styles */
+    .sample-itineraries-section {
+        padding: 120px 0;
+        background: white;
+    }
+    
+    .section-description {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 60px;
+        font-family: var(--secondary-font);
+    }
+    
+    .planning-showcase {
+        margin-bottom: 80px;
+        text-align: center;
+    }
+    
+    .showcase-header {
+        margin-bottom: 50px;
+    }
+    
+    .showcase-header h3 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    .showcase-header p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .planning-demo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+    
+    .demo-step {
+        flex: 1;
+        max-width: 250px;
+        min-width: 200px;
+    }
+    
+    .step-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(30, 115, 190, 0.3);
+    }
+    
+    .step-icon i {
+        font-size: 32px;
+        color: white;
+    }
+    
+    .demo-step h4 {
+        color: #333;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .demo-step p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .demo-arrow {
+        color: var(--primary-color);
+        font-size: 24px;
+        opacity: 0.6;
+    }
+    
+    .city-examples {
+        text-align: center;
+    }
+    
+    .city-examples h3 {
+        color: var(--primary-color);
+        margin-bottom: 50px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .cities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+    }
+    
+    .city-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .city-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .city-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .city-content {
+        padding: 25px 20px;
+    }
+    
+    .city-content h4 {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    .city-content p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .planning-cta {
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #f8fbff, #f0f7ff);
+        border-radius: 20px;
+        border: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .cta-subtitle {
+        margin-top: 15px;
+        color: #666;
+        font-size: 14px;
+        font-style: italic;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .planning-demo {
+            flex-direction: column;
             gap: 30px;
         }
         
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
+        .demo-arrow {
+            transform: rotate(90deg);
         }
         
-        .nav-links a i {
-            margin-right: 5px;
+        .cities-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .showcase-header h3 {
+            font-size: 1.5rem;
         }
         
-        .nav-links a:hover {
-            color: var(--secondary);
-            transform: translateY(-2px);
+        .city-examples h3 {
+            font-size: 1.6rem;
         }
         
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
+        .planning-cta {
+            padding: 30px 15px;
+        }
+    }
+    
+    .featured-trip {
+        background: rgba(255,255,255,0.95);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .trip-header {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 0;
+    }
+    
+    .trip-image {
+        position: relative;
+        height: 300px;
+        overflow: hidden;
+    }
+    
+    .trip-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .trip-overlay {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    
+    .trip-badge {
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .trip-info {
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .trip-info h3 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: var(--primary-font);
+        font-weight: 700;
+    }
+    
+    .trip-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .trip-meta span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #666;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .trip-meta i {
+        color: var(--primary-color);
+    }
+    
+    .trip-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .tag {
+        background: linear-gradient(135deg, #f0f7ff, #e0f0ff);
+        color: var(--primary-color);
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgba(30,115,190,0.2);
+    }
+    
+    .trip-details {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+        padding: 40px;
+        background: #f8fbff;
+    }
+    
+    .day-by-day h4,
+    .trip-includes h4 {
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+    
+    .demo-days {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .demo-day {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    
+    .day-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), #3498db);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+    
+    .day-content h5 {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .day-content p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .demo-day-more {
+        text-align: center;
+        padding: 20px;
+        background: rgba(30,115,190,0.05);
+        border-radius: 12px;
+        border: 1px dashed rgba(30,115,190,0.2);
+    }
+    
+    .more-days {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    
+    .demo-day-more p {
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .includes-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .include-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .include-item i {
+        color: var(--primary-color);
+        font-size: 16px;
+        width: 20px;
+    }
+    
+    .include-item span {
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .trip-action {
+        padding: 40px;
+        text-align: center;
+        background: white;
+        border-top: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .trip-time {
+        display: block;
+        margin-top: 15px;
+        color: #666;
+        font-size: 14px;
+        font-style: italic;
+    }
+    
+    .quick-examples {
+        text-align: center;
+    }
+    
+    .quick-examples h3 {
+        color: var(--primary-color);
+        margin-bottom: 40px;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    
+    .examples-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .quick-example {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(30,115,190,0.1);
+    }
+    
+    .quick-example:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    .quick-example img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .example-content {
+        padding: 25px 20px;
+    }
+    
+    .example-content h4 {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    .example-content p {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    
+    .example-price {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .trip-header {
+            grid-template-columns: 1fr;
         }
         
-        .btn {
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
+        .trip-details {
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
         
-        .btn-primary {
-            background: var(--white);
-            color: var(--primary);
+        .examples-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .trip-info {
+            padding: 30px 20px;
         }
         
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--white);
+        .trip-details {
+            padding: 30px 20px;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .trip-action {
+            padding: 30px 20px;
         }
         
-        /* Hero Section */
-        .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                              url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
-            margin-top: 60px;
+        .trip-info h3 {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .testimonials-section {
+        padding: 100px 0;
+        background-color: #f8f9fa;
+    }
+    
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+    }
+    
+    .testimonial-card {
+        padding: 30px;
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .testimonial-content {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .testimonial-content i {
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--primary-color);
+        font-size: 24px;
+        opacity: 0.5;
+    }
+    
+    .testimonial-content p {
+        font-family: var(--secondary-font);
+        line-height: 1.7;
+        color: #6c757d;
+    }
+    
+    .testimonial-author {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .testimonial-author p {
+        font-family: var(--primary-font);
+    }
+    
+    .testimonial-rating i {
+        color: #ffc107;
+        margin-right: 2px;
+    }
+    
+    .cta-section {
+        padding: 100px 0;
+        /* background-color: var(--primary-color); */
+        background-color: #073566;
+        color: white;
+        text-align: center;
+    }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        font-family: var(--primary-font);
+        font-weight: 700;
+    }
+    
+    .cta-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        font-family: var(--secondary-font);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
         }
         
-        .hero-content {
-            max-width: 800px;
+        .hero-description {
+            font-size: 1rem;
         }
         
-        .hero-content h1 {
-            font-size: 56px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-content p {
-            font-size: 24px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: var(--gradient-secondary);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background: var(--white);
+        .features-grid, .destination-grid, .testimonials-grid {
+            grid-template-columns: 1fr;
         }
         
         .section-title {
-            text-align: center;
-            margin-bottom: 60px;
+            font-size: 2rem;
         }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: var(--dark-blue);
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: #666;
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--light-blue);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-        }
-        
-        .feature-icon i {
-            font-size: 32px;
-            color: var(--primary);
-        }
-        
-        .feature-card h3 {
-            font-size: 24px;
-            color: var(--dark-blue);
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        /* How It Works Section */
-        .how-it-works {
-            padding: 100px 0;
-            background: var(--light-blue);
-        }
-        
-        .steps-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-        }
-        
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0 auto 20px;
-        }
-        
-        .step h3 {
-            font-size: 20px;
-            color: var(--dark-blue);
-            margin-bottom: 15px;
-        }
-        
-        .step p {
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        /* Testimonials Section */
-        .testimonials {
-            padding: 100px 0;
-            background: var(--white);
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .testimonial-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .testimonial-content {
-            font-size: 16px;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--light-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--primary);
-        }
-        
-        .author-info h4 {
-            color: var(--dark-blue);
-            margin-bottom: 5px;
-        }
-        
-        .author-info p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark-grey);
-            color: white;
-            padding: 60px 0 30px;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-        }
-        
-        .footer-section h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--secondary);
-        }
-        
-        .footer-section ul {
-            list-style: none;
-        }
-        
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-section ul li a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-section ul li a:hover {
-            color: var(--secondary);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: var(--secondary);
-            transform: translateY(-3px);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ccc;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero-content h1 {
-                font-size: 40px;
-            }
-            
-            .hero-content p {
-                font-size: 18px;
-            }
-            
-            .steps {
-                flex-direction: column;
-            }
-            
-            .step {
-                margin-bottom: 30px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="navbar">
-            <div class="logo">
-                <i class="fas fa-plane-departure"></i>
-                <span>TravelPlan AI</span>
-            </div>
-            <div class="nav-links">
-                <a href="#features"><i class="fas fa-star"></i> Features</a>
-                <a href="#how-it-works"><i class="fas fa-cogs"></i> How It Works</a>
-                <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
-            </div>
-            <div class="auth-buttons">
-                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-                <a href="{{ url_for('signup') }}" class="btn btn-secondary">Sign Up</a>
-            </div>
-        </div>
-    </header>
+    }
     
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Plan Your Perfect Trip with AI</h1>
-            <p>Experience the future of travel planning with our AI-powered platform. Get personalized itineraries, smart recommendations, and seamless booking all in one place.</p>
-            <a href="{{ url_for('signup') }}" class="cta-button">Start Planning Now</a>
-        </div>
-    </section>
+    /* Sample Itineraries Section */
+    .sample-itineraries-section {
+        padding: 60px 0;
+        background-color: #f8f9fa;
+    }
     
-    <section class="features" id="features">
-        <div class="section-title">
-            <h2>Features</h2>
-            <p>Everything you need for perfect trip planning</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <i class="fas fa-robot"></i>
-                <h3>AI-Powered Planning</h3>
-                <p>Get personalized travel recommendations based on your preferences and interests.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-map-marked-alt"></i>
-                <h3>Smart Itineraries</h3>
-                <p>Receive detailed day-by-day itineraries optimized for your travel style.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-wallet"></i>
-                <h3>Budget Management</h3>
-                <p>Track and manage your travel budget with smart expense breakdowns.</p>
-            </div>
-        </div>
-    </section>
+    .section-description {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 40px;
+        color: #666;
+    }
     
-    <section class="how-it-works" id="how-it-works">
-        <div class="section-title">
-            <h2>How It Works</h2>
-            <p>Three simple steps to plan your perfect trip</p>
-        </div>
-        <div class="steps-container">
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Share Your Preferences</h3>
-                    <p>Tell us about your travel style, interests, and budget preferences.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>AI Analysis</h3>
-                    <p>Our AI analyzes your preferences and creates a personalized travel plan.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Get Your Plan</h3>
-                    <p>Receive a detailed itinerary with recommendations and booking options.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    .itinerary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
     
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>TravelPlan AI</h3>
-                <p>Your AI-powered travel planning companion</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 TravelPlan AI. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html> 
+    .itinerary-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .itinerary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .itinerary-header {
+        position: relative;
+        height: 200px;
+    }
+    
+    .itinerary-header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .itinerary-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+        color: white;
+    }
+    
+    .itinerary-overlay h3 {
+        margin: 0 0 10px;
+        font-size: 1.4rem;
+    }
+    
+    .itinerary-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .tag {
+        background-color: rgba(255,255,255,0.2);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+    }
+    
+    .itinerary-content {
+        padding: 20px;
+    }
+    
+    .itinerary-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .itinerary-detail i {
+        margin-right: 5px;
+        color: #1e73be;
+    }
+    
+    .itinerary-highlights h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .itinerary-highlights ul {
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .itinerary-highlights li {
+        margin-bottom: 5px;
+        color: #555;
+    }
+    
+    .btn-block {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Slideshow functionality
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const prevButton = document.querySelector('.prev-slide');
+        const nextButton = document.querySelector('.next-slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        // Auto slide change
+        let slideInterval = setInterval(nextSlide, 5000);
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+            
+            currentSlide = index;
+            
+            // Reset interval
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function nextSlide() {
+            showSlide((currentSlide + 1) % totalSlides);
+        }
+        
+        function prevSlide() {
+            showSlide((currentSlide - 1 + totalSlides) % totalSlides);
+        }
+        
+        // Event listeners
+        if (prevButton) prevButton.addEventListener('click', prevSlide);
+        if (nextButton) nextButton.addEventListener('click', nextSlide);
+        
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => showSlide(index));
+        });
+    });
+</script>
+{% endblock %} 
