@@ -461,7 +461,7 @@ function populateBudget(data) {
             
             const costPill = document.createElement('div');
             costPill.className = 'cost-pill';
-            costPill.textContent = `${currency.toUpperCase()} ${cost}`;
+            costPill.textContent = `${cost}`;
             
             categoryHeader.appendChild(headerLeft);
             categoryHeader.appendChild(costPill);
@@ -485,7 +485,7 @@ function populateBudget(data) {
         if (travelCost && !hasTravelInBudget) {
             const noteElement = document.createElement('p');
             noteElement.className = 'budget-note';
-            noteElement.innerHTML = `<strong>Note:</strong> Travel costs of ${currency.toUpperCase()} ${travelCost} are listed separately and not included in the total budget.`;
+            noteElement.innerHTML = `<strong>Note:</strong> Travel costs of ${travelCost} are listed separately and not included in the total budget.`;
             budgetBreakdown.appendChild(noteElement);
         }
         
