@@ -1,3 +1,4 @@
+
 import os
 import json
 import time
@@ -351,8 +352,10 @@ def generate_plan():
             "season": data.get('season'),
             "duration": data.get('duration'),
             "start_city": data.get('start_city'),
-            "people": data.get('people')
+            "people": data.get('people'),
+            "budget_currency": data.get('budget_currency')  # Always include selected currency
         }
+        print(f"Trip inputs: {inputs}")
         
         # Handle the budget - could be a number or a string (Low/Medium/High)
         budget = data.get('budget')
